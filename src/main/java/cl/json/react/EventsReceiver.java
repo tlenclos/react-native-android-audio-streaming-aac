@@ -1,26 +1,26 @@
 package cl.json.react;
 
-import cl.json.react.AACStreamingModule;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.BroadcastReceiver;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
-import javax.annotation.Nullable;
 
 
-public class EventsReceiver extends BroadcastReceiver{
-  private AACStreamingModule module;
-  public EventsReceiver(AACStreamingModule module) {
-    this.module = module;
+public class EventsReceiver extends BroadcastReceiver {
+    private AACStreamingModule module;
 
-  }
-  @Override
-  public void onReceive(Context context, Intent intent) {
-    WritableMap params = Arguments.createMap();
-    params.putString("eventName" , intent.getAction());
-    this.module.sendEvent(this.module.getReactApplicationContextModule(), "streamingEvent", params);
+    public EventsReceiver(AACStreamingModule module) {
+        this.module = module;
+
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        WritableMap params = Arguments.createMap();
+        params.putString("eventName", intent.getAction());
+        this.module.sendEvent(this.module.getReactApplicationContextModule(), "streamingEvent", params);
     /*
     if (intent.getAction().equals(Mode.BUFFERING_START)) {
       this.module.sendEvent(this.module.getReactApplicationContextModule(), "bufferingStart", params);
@@ -46,5 +46,5 @@ public class EventsReceiver extends BroadcastReceiver{
       this.module.sendEvent(this.module.getReactApplicationContextModule(), "albumUpdate", params);
     }
     */
-  }
+    }
 }
