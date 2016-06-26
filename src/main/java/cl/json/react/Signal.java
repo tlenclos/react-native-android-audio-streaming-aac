@@ -23,6 +23,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.spoledge.aacdecoder.MultiPlayer;
@@ -344,7 +345,10 @@ public class Signal extends Service implements OnErrorListener,
 
     @Override
     public void playerMetadata(final String key, final String value) {
-        //  TODO
+        Intent metaIntent = new Intent(Mode.METADATA_UPDATED);
+        metaIntent.putExtra("key", key);
+        metaIntent.putExtra("value", value);
+        sendBroadcast(metaIntent);
     }
 
     @Override

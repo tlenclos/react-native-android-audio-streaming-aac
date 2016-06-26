@@ -89,19 +89,11 @@ public class AACStreamingModule extends ReactContextBaseJavaModule implements Se
 
     @ReactMethod
     public void play() {
-        WritableMap params = Arguments.createMap();
-        params.putString("status", "PLAYING");
-        this.sendEvent(this.getReactApplicationContextModule(), "AudioBridgeEvent", params);
-
         signal.play();
     }
 
     @ReactMethod
     public void stop() {
-        WritableMap params = Arguments.createMap();
-        params.putString("status", "STOPPED");
-        this.sendEvent(this.getReactApplicationContextModule(), "AudioBridgeEvent", params);
-
         signal.stop();
     }
 
