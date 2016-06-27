@@ -129,9 +129,10 @@ public class Signal extends Service implements OnErrorListener,
                 }
             });
         } catch (Throwable t) {
-        }
-        sendBroadcast(new Intent(Mode.CREATED));
 
+        }
+
+        sendBroadcast(new Intent(Mode.CREATED));
     }
 
     public void setURLStreaming(String streamingURL) {
@@ -167,11 +168,8 @@ public class Signal extends Service implements OnErrorListener,
     }
 
     public void showNotification() {
-
         Bitmap bitlogo = BitmapFactory.decodeResource(context.getResources(),
                 R.drawable.streaming_notification_default_icon);
-        //Bitmap bitplay= BitmapFactory.decodeResource(context.getResources(),R.drawable.streaming_notification_default_play);
-        //Bitmap bitstop= BitmapFactory.decodeResource(context.getResources(),R.drawable.streaming_notification_default_stop);
         remoteViews = new RemoteViews(context.getPackageName(),
                 R.layout.streaming_notification_player);
         notifyBuilder = new NotificationCompat.Builder(this.context)
@@ -192,13 +190,11 @@ public class Signal extends Service implements OnErrorListener,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         notifyBuilder.setContentIntent(resultPendingIntent);
-        //to use custom notification
+        // to use custom notification
         remoteViews.setOnClickPendingIntent(R.id.btn_streaming_notification_play, makePendingIntent(BROADCAST_PLAYBACK_PLAY));
         remoteViews.setOnClickPendingIntent(R.id.btn_streaming_notification_stop, makePendingIntent(BROADCAST_EXIT));
         //remoteViews.setTextViewText(R.id.textView1, information.RadioName);
         remoteViews.setImageViewBitmap(R.id.streaming_icon, bitlogo);
-        //remoteViews.setImageViewBitmap(R.id.btn_streaming_notification_play, bitplay);
-        //remoteViews.setImageViewBitmap(R.id.btn_streaming_notification_stop, bitstop);
         notifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notifyManager.notify(NOTIFY_ME_ID, notifyBuilder.build());
     }
@@ -250,7 +246,6 @@ public class Signal extends Service implements OnErrorListener,
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (this.isPlaying) {
-            //STATUS_PLAYING
             sendBroadcast(new Intent(Mode.PLAYING));
         } else if (this.isPreparingStarted) {
             sendBroadcast(new Intent(Mode.START_PREPARING));
@@ -276,7 +271,6 @@ public class Signal extends Service implements OnErrorListener,
         this.isPlaying = false;
         this.isPrepared = false;
         this.aacPlayer.stop();
-        //this.aacPlayer.reset();
         sendBroadcast(new Intent(Mode.COMPLETED));
     }
 

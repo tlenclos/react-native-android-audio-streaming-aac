@@ -13,7 +13,6 @@ public class EventsReceiver extends BroadcastReceiver {
 
     public EventsReceiver(AACStreamingModule module) {
         this.module = module;
-
     }
 
     @Override

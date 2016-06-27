@@ -90,6 +90,7 @@ public class AACStreamingModule extends ReactContextBaseJavaModule implements Se
     @ReactMethod
     public void play() {
         signal.play();
+        signal.showNotification();
     }
 
     @ReactMethod

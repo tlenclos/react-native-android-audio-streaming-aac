@@ -18,26 +18,20 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="65dp">
-                <Button
+                <ImageButton
                     android:id="@+id/btn_streaming_notification_play"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:textSize="14sp"
-                    android:textColor="#fff"
-                    android:textStyle="bold"
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="5dp"
-                    android:text="" />
-                <Button
+                    android:src="@android:drawable/ic_media_play" />
+                <ImageButton
                     android:id="@+id/btn_streaming_notification_stop"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_toRightOf="@+id/btn_streaming_notification_play"
-                    android:textSize="14sp"
-                    android:textColor="#fff"
-                    android:textStyle="bold"
                     android:layout_gravity="center_vertical"
-                    android:text="" />
+                    android:src="@android:drawable/ic_media_pause" />
 
             </LinearLayout>
 
