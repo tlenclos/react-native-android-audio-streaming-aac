@@ -59,7 +59,6 @@ public class Signal extends Service implements OnErrorListener,
     private String streamingURL;
     public boolean isPlaying = false;
     private boolean isPreparingStarted = false;
-    private boolean isPrepared = false;
     private EventsReceiver eventsReceiver;
     private AACStreamingModule module;
 
@@ -101,7 +100,6 @@ public class Signal extends Service implements OnErrorListener,
 
     @Override
     public void onCreate() {
-
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BROADCAST_PLAYBACK_STOP);
         intentFilter.addAction(BROADCAST_PLAYBACK_PLAY);
@@ -145,15 +143,18 @@ public class Signal extends Service implements OnErrorListener,
         } else {
             sendBroadcast(new Intent(Mode.STOPPED));
         }
+
+        this.isPlaying = true;
     }
 
     public void stop() {
-        this.isPrepared = false;
         this.isPreparingStarted = false;
+
         if (this.isPlaying) {
             this.isPlaying = false;
             this.aacPlayer.stop();
         }
+
         sendBroadcast(new Intent(Mode.STOPPED));
     }
 
@@ -168,12 +169,9 @@ public class Signal extends Service implements OnErrorListener,
     }
 
     public void showNotification() {
-        Bitmap bitlogo = BitmapFactory.decodeResource(context.getResources(),
-                R.drawable.streaming_notification_default_icon);
-        remoteViews = new RemoteViews(context.getPackageName(),
-                R.layout.streaming_notification_player);
+        remoteViews = new RemoteViews(context.getPackageName(), R.layout.streaming_notification_player);
         notifyBuilder = new NotificationCompat.Builder(this.context)
-                .setSmallIcon(R.drawable.streaming_notification_default_icon)
+                .setSmallIcon(android.R.drawable.ic_lock_silent_mode_off) // TODO Use app icon instead
                 .setContentText("")
                 .setOngoing(true)
                 .setContent(remoteViews);
@@ -190,11 +188,8 @@ public class Signal extends Service implements OnErrorListener,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         notifyBuilder.setContentIntent(resultPendingIntent);
-        // to use custom notification
         remoteViews.setOnClickPendingIntent(R.id.btn_streaming_notification_play, makePendingIntent(BROADCAST_PLAYBACK_PLAY));
         remoteViews.setOnClickPendingIntent(R.id.btn_streaming_notification_stop, makePendingIntent(BROADCAST_EXIT));
-        //remoteViews.setTextViewText(R.id.textView1, information.RadioName);
-        remoteViews.setImageViewBitmap(R.id.streaming_icon, bitlogo);
         notifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notifyManager.notify(NOTIFY_ME_ID, notifyBuilder.build());
     }
@@ -262,14 +257,12 @@ public class Signal extends Service implements OnErrorListener,
     @Override
     public void onPrepared(MediaPlayer _mediaPlayer) {
         this.isPreparingStarted = false;
-        this.isPrepared = true;
         sendBroadcast(new Intent(Mode.PREPARED));
     }
 
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
         this.isPlaying = false;
-        this.isPrepared = false;
         this.aacPlayer.stop();
         sendBroadcast(new Intent(Mode.COMPLETED));
     }
@@ -311,7 +304,6 @@ public class Signal extends Service implements OnErrorListener,
     @Override
     public void playerPCMFeedBuffer(boolean isPlaying, int bufSizeMs, int bufCapacityMs) {
         if (isPlaying) {
-            this.isPrepared = true;
             this.isPreparingStarted = false;
             if (bufSizeMs < 500) {
                 this.isPlaying = false;
@@ -343,6 +335,12 @@ public class Signal extends Service implements OnErrorListener,
         metaIntent.putExtra("key", key);
         metaIntent.putExtra("value", value);
         sendBroadcast(metaIntent);
+
+        if (key != null && key.equals("StreamTitle")) {
+            remoteViews.setTextViewText(R.id.song_name_notification, value);
+            notifyBuilder.setContent(remoteViews);
+            notifyManager.notify(NOTIFY_ME_ID, notifyBuilder.build());
+        }
     }
 
     @Override

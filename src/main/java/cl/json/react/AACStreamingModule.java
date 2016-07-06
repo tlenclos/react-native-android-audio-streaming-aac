@@ -66,7 +66,6 @@ public class AACStreamingModule extends ReactContextBaseJavaModule implements Se
         signal.setData(this.context, this.clsActivity, this);
         WritableMap params = Arguments.createMap();
         sendEvent(this.getReactApplicationContextModule(), "streamingOpen", params);
-        signal.showNotification();
     }
 
     @Override

@@ -18,7 +18,8 @@ class SignalReceiver extends BroadcastReceiver {
         if (action.equals(Signal.BROADCAST_PLAYBACK_PLAY)) {
             if (!this.signal.isPlaying) {
                 this.signal.play();
-                this.signal.isPlaying = true;
+            } else {
+                this.signal.stop();
             }
         } else if (action.equals(Signal.BROADCAST_EXIT)) {
             this.signal.getNotifyManager().cancelAll();
