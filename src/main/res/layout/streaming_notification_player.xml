@@ -23,14 +23,15 @@
                 android:layout_height="50dp">
                 <ImageButton
                     android:id="@+id/btn_streaming_notification_play"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginRight="5dp"
                     android:src="@android:drawable/ic_media_play" />
                 <ImageButton
                     android:id="@+id/btn_streaming_notification_stop"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
                     android:layout_toRightOf="@+id/btn_streaming_notification_play"
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="10dp"
@@ -44,7 +45,5 @@
                     android:textColor="#fff"
                     />
             </LinearLayout>
-
         </RelativeLayout>
-
     </RelativeLayout>
